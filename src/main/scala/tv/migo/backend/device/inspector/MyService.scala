@@ -5,8 +5,10 @@ import spray.routing._
 import spray.http._
 import java.io._
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.{Date, Calendar}
 import java.net.InetAddress
+import java.util.Properties
+import java.io.FileInputStream
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -26,8 +28,10 @@ class MyServiceActor extends Actor with MyService {
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
 
-  //val S = new PrintWriter("/tmp/dump_test.txt")
-  val runDir = "./run"
+  val prop = new Properties()
+  prop.load(new FileInputStream("./config.properties"))
+
+  val runDir = prop.getProperty("runFolder")
   new java.io.File(runDir).mkdirs()
 
   val host = this.getHost()
@@ -44,21 +48,31 @@ trait MyService extends HttpService {
     }
   }
 
+  private def logs = (new java.io.File(runDir)).listFiles
+  private def filesMatching(matcher: String ) =
+    for (file <- logs; if ( matcher.toString().compareTo(file.getName.substring(0,8)) >= 0 ) ) yield file
+
   def getHost(): String = InetAddress.getLocalHost().getHostName()
 
   def getNow(): String = {
     val today = Calendar.getInstance().getTime()
-    val yF = new SimpleDateFormat("yyyy").format(today)
-    val MF = new SimpleDateFormat("MM").format(today)
-    val dF = new SimpleDateFormat("dd").format(today)
-    val hF = new SimpleDateFormat("hh").format(today)
-
-    yF+MF+dF+hF
+    getNowBy("yyyy",today)+getNowBy("MM",today)+getNowBy("dd",today)+getNowBy("hh",today)
   }
 
+  def getNowBy(fm:String, today:Date): String = new SimpleDateFormat(fm).format( today )
+
   def log_header(ss: String) = {
+
+    val today = Calendar.getInstance().getTime()
+
+
+    filesMatching( getNowBy("yyyy",today)
+              + getNowBy("MM",today)
+              + getNowBy("dd", new Date(today.getTime - 3*24*60*60*1000)) )
+             .foreach( _.delete() )
+
     val now  = this.getNow()
-    val S    = this.writer(runDir + "/" + host + "_" + now + ".dat")
+    val S    = this.writer(runDir + "/" + now + "_" + host + ".dat")
     S.write(ss+"\n")
     S.flush()
     S.close()
