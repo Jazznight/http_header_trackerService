@@ -10,25 +10,34 @@ from http header.
 Follow these steps to get started:
 
 
-1. Change directory into your clone:
+1. Install scala 2.10, sbt 0.13 by root
 
-        $ cd my-project
+        $ ./install.sh
 
-2. Launch SBT:
+2. Configure config.properties
 
-        $ sbt
+        # For web server program using
+        server.listen=0.0.0.0
+        server.port=1357
+        run.folder=./run
+        
+        # For shell script using (scp $file $backend.user@$backend.ip:$backend.folder) 
+        # (We don't user password. please put AP's RSA public key to backen server)
+        backend.user=brian
+        backend.ip=10.20.0.152
+        backend.folder=/home/brian
 
-3. Compile everything and run all tests:
+3. Compile and deploy web server
 
-        > test
+        $ sbt assembly
 
-4. Start the application:
+4. Start web app
 
-        > re-start
+        $ ./bin/start.sh
 
-5. Browse to [http://localhost:1357](http:$(HOSTNAME)//:1357/)
+5. Browse to [http://ip:port] which you define in config.properties file
 
-6. Stop the application:
+6. Stop the web app:
 
-        > re-stop
+        $ ./bin/stop.sh
 

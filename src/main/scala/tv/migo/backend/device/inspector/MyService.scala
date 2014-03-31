@@ -31,7 +31,7 @@ trait MyService extends HttpService {
   val prop = new Properties()
   prop.load(new FileInputStream("./config.properties"))
 
-  val runDir = prop.getProperty("runFolder")
+  val runDir = prop.getProperty("run.folder")
   new java.io.File(runDir).mkdirs()
 
   val host = this.getHost()
