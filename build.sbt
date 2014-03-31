@@ -1,4 +1,4 @@
-organization  := "com.example"
+organization  := "tv.migo"
 
 version       := "0.1"
 
