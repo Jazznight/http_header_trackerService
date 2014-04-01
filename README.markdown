@@ -4,7 +4,7 @@ This projects provides a web site for acquiring the device identifier
 from http header.
 
 
-* _spray-can_, Scala 2.10 + Akka 2.3 + spray 1.3 
+* _spray-can_, Scala 2.10 + sbt 0.13 + Akka 2.3 + spray 1.3
 
 
 Follow these steps to get started:
@@ -15,7 +15,7 @@ Follow these steps to get started:
         $ ./install.sh
 
 2. Generate the default config.properties file and compile the source code.
-   (This part will also write wome env variable into $HOME/.bashrc)
+   (This part will also write some env variable into $HOME/.bashrc, it will be use by cron job)
 
         $ ./setup.sh
 
@@ -44,5 +44,5 @@ Follow these steps to get started:
 
         $ stop.sh
 
-7. Add scp.sh to crontab for sync data to backend server (suggest every 15 min)
+7. Add bin/scp.sh to crontab for sync data to backend server (suggest every 15 min)
 
