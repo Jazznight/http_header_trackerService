@@ -9,3 +9,5 @@ test-output/
 .classpath_nb
 run/
 logs/
+data/
+config.properties

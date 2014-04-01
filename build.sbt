@@ -1,3 +1,9 @@
+import AssemblyKeys._
+
+seq(assemblySettings: _*)
+
+addSbtPlugin("com.eed3si9n" %% "sbt-assembly" % "0.11.2")
+
 organization  := "tv.migo"
 
 version       := "0.1"
@@ -5,8 +11,6 @@ version       := "0.1"
 scalaVersion  := "2.10.3"
 
 scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
-
-
 
 libraryDependencies ++= {
   val akkaV = "2.3.0"
@@ -22,3 +26,5 @@ libraryDependencies ++= {
 }
 
 Revolver.settings
+
+mainClass in assembly := Some("tv.migo.backend.device.inspector.Boot")

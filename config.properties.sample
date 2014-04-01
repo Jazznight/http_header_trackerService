@@ -1,0 +1,12 @@
+project.folder=/home/andaman/device_inspector
+
+# For web server program using
+server.listen=0.0.0.0
+server.port=1357
+data.folder=./data
+
+# For shell script using (scp $file $backend.user@$backend.ip:$backend.folder) 
+# (We don't user password. please put AP's RSA public key to backen server)
+backend.user=andaman
+backend.ip=10.20.0.152
+backend.folder=/home/andaman

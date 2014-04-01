@@ -31,8 +31,8 @@ trait MyService extends HttpService {
   val prop = new Properties()
   prop.load(new FileInputStream("./config.properties"))
 
-  val runDir = prop.getProperty("run.folder")
-  new java.io.File(runDir).mkdirs()
+  val dataDir = prop.getProperty("data.folder")
+  new java.io.File(dataDir).mkdirs()
 
   val host = this.getHost()
 
@@ -48,9 +48,12 @@ trait MyService extends HttpService {
     }
   }
 
-  private def logs = (new java.io.File(runDir)).listFiles
+  private def logs = (new java.io.File(dataDir)).listFiles
   private def filesMatching(matcher: String ) =
-    for (file <- logs; if ( matcher.toString().compareTo(file.getName.substring(0,8)) >= 0 ) ) yield file
+    for (file <- logs; 
+         if (  file.getName.endsWith(".dat") 
+            && matcher.toString().compareTo(file.getName.substring(0,8)) >= 0 ) ) yield file
+  
 
   def getHost(): String = InetAddress.getLocalHost().getHostName()
 
@@ -64,15 +67,16 @@ trait MyService extends HttpService {
   def log_header(ss: String) = {
 
     val today = Calendar.getInstance().getTime()
+    val threeDayAgo = new Date(today.getTime - 3*24*60*60*1000)
 
-
-    filesMatching( getNowBy("yyyy",today)
-              + getNowBy("MM",today)
-              + getNowBy("dd", new Date(today.getTime - 3*24*60*60*1000)) )
-             .foreach( _.delete() )
+    filesMatching( getNowBy("yyyy",threeDayAgo)
+              + getNowBy("MM",threeDayAgo)
+              + getNowBy("dd",threeDayAgo) )
+              .foreach( _.delete() )
+             //.foreach(d => println("DIR: " + d.toString) ) 
 
     val now  = this.getNow()
-    val S    = this.writer(runDir + "/" + now + "_" + host + ".dat")
+    val S    = this.writer(dataDir + "/" + now + "_" + host + ".dat")
     S.write(ss+"\n")
     S.flush()
     S.close()

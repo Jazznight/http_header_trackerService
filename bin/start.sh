@@ -2,7 +2,5 @@
 
 mkdir -p run logs
 
-cp target/scala-2.10/*assembly*.jar bin/ > /dev/null 2>&1
-
-nohup java -jar bin/*jar > logs/server.log 2>&1 &
-echo $! > run/run.pid
+nohup java -Dconfig=$DEVICE_INSPECTOR_DIR/config.properties -jar bin/*jar > $DEVICE_INSPECTOR_DIR/logs/server.log 2>&1 &
+echo $! > $DEVICE_INSPECTOR_DIR/run/run.pid

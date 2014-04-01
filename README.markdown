@@ -14,30 +14,35 @@ Follow these steps to get started:
 
         $ ./install.sh
 
-2. Configure config.properties
+2. Generate the default config.properties file and compile the source code.
+   (This part will also write wome env variable into $HOME/.bashrc)
+
+        $ ./setup.sh
+
+3. Configure config.properties for replacing default generated
+
+        project.folder=/home/andaman/inspector_project
 
         # For web server program using
         server.listen=0.0.0.0
         server.port=1357
-        run.folder=./run
+        data.folder=/home/andaman/inspector_project/data
         
         # For shell script using (scp $file $backend.user@$backend.ip:$backend.folder) 
         # (We don't user password. please put AP's RSA public key to backen server)
-        backend.user=brian
+        backend.user=andaman
         backend.ip=10.20.0.152
-        backend.folder=/home/brian
-
-3. Compile and deploy web server
-
-        $ sbt assembly
+        backend.folder=/home/andaman
 
 4. Start web app
 
-        $ ./bin/start.sh
+        $ start.sh
 
-5. Browse to [http://ip:port] which you define in config.properties file
+5. Browse to [http://${server.ip}:${server.port}] which you define in config.properties file
 
 6. Stop the web app:
 
-        $ ./bin/stop.sh
+        $ stop.sh
+
+7. Add scp.sh to crontab for sync data to backend server (suggest every 15 min)
 
