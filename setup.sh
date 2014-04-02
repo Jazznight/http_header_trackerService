@@ -16,6 +16,8 @@ fi
 
 prj_dir=`pwd`
 
+mkdir -p $prj_dir/run $prj_dir/logs
+
 cat config.properties.sample |awk -F'=' -v pwd=$prj_dir '
 /project.folder/{ $2=pwd; printf("%s=%s\n",$1,$2); next }
 /data.folder/{ $2=pwd; printf("%s=%s/data\n",$1,$2); next }
