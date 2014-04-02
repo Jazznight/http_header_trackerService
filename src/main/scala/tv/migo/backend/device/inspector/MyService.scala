@@ -28,8 +28,10 @@ class MyServiceActor extends Actor with MyService {
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
 
+  val config_file = if (System.getProperty("config") == null) "./config.properties" else System.getProperty("config")
+
   val prop = new Properties()
-  prop.load(new FileInputStream("./config.properties"))
+  prop.load(new FileInputStream(config_file))
 
   val dataDir = prop.getProperty("data.folder")
   new java.io.File(dataDir).mkdirs()
