@@ -21,18 +21,18 @@ Follow these steps to get started:
 
 3. Configure config.properties for replacing default generated
 
-        project.folder=/home/andaman/inspector_project
+        project.folder=/home/brian/inspector_project
 
         # For web server program using
         server.listen=0.0.0.0
         server.port=1357
-        data.folder=/home/andaman/inspector_project/data
+        data.folder=/home/brian/inspector_project/data
         
         # For shell script using (scp $file $backend.user@$backend.ip:$backend.folder) 
         # (We don't user password. please put AP's RSA public key to backen server)
-        backend.user=andaman
-        backend.ip=10.20.0.152
-        backend.folder=/home/andaman
+        backend.user=brian
+        backend.ip=192.168.168.168
+        backend.folder=/home/brian
 
 4. Start web app
 
